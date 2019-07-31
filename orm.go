@@ -25,7 +25,7 @@ func main() {
 }
 
 func conn() (db *gorm.DB) {
-	args := "wangjk:wangjk_21@web@tcp(url)/zzx_demo?charset=utf8&parseTime=True&loc=Local"
+	args := "wangjk:wangjk_21@web@tcp(47.92.23.244:3306)/zzx_demo?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", args)
 
 	if err != nil {
