@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"time"
@@ -75,13 +74,13 @@ func downloadPic(ch chan Info) {
 	os.Mkdir(dir, os.ModePerm)
 
 	for v := range ch {
-		fmt.Println("download ... ", i)
+		fmt.Println("download ... ", v.Title)
 
-		res, _ := http.Get(v.Src)
-		fileName := fmt.Sprintf("./%s/%d.png", dir, i)
-		file, _ := os.Create(fileName)
-		io.Copy(file, res.Body)
-		i++
+		//res, _ := http.Get(v.Src)
+		//fileName := fmt.Sprintf("./%s/%d.png", dir, i)
+		//file, _ := os.Create(fileName)
+		//io.Copy(file, res.Body)
+		//i++
 	}
 	wg.Done()
 }

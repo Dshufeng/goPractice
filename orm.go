@@ -21,7 +21,8 @@ func main() {
 	//db.Table("zzx_user").Last(&users)
 	//
 	//fmt.Println(users)
-	login()
+	//login()
+	Edit()
 }
 
 func conn() (db *gorm.DB) {
@@ -44,12 +45,17 @@ func login() {
 	fmt.Scan(&password)
 
 	db := conn()
+	db.LogMode(true)
 	defer db.Close()
 
-	var user model.User
-	db.Table("zzx_user").Where("username = ?", name).First(&user)
+	var people model.People
+	err := db.Table("zzx_user").Where("username = ?", name).First(&people).Error
+	if err == gorm.ErrRecordNotFound {
+		fmt.Println("用户名不存在")
+		return
+	}
 
-	if (MD5HEX(MD5HEX(password) + user.Salt)) != user.Password {
+	if (MD5HEX(MD5HEX(password) + people.Salt)) != people.Password {
 		fmt.Println("login err")
 		return
 	}
@@ -60,4 +66,13 @@ func MD5HEX(str string) string {
 	s := md5.New()
 	s.Write([]byte(str))
 	return hex.EncodeToString(s.Sum(nil))
+}
+
+func Edit() {
+	db := conn()
+	people := &model.People{
+		UID: 1,
+	}
+	db.Table("zzx_user").Model(&people).Update("reg_ip", "127.1.1.1")
+
 }

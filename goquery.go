@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"time"
@@ -30,7 +29,7 @@ func main() {
 	fmt.Println("user time:", t2.Sub(t1))
 }
 func getMeta() []Info {
-	for p := 1; p <= 10; p++ {
+	for p := 1; p <= 20; p++ {
 		url := fmt.Sprintf("https://www.zcool.com.cn?p=%d", p)
 		initUrls = append(initUrls, url)
 	}
@@ -66,12 +65,12 @@ func downloadPic(picInfo []Info) {
 	os.Mkdir(dir, os.ModePerm)
 
 	for _, v := range picInfo {
-		fmt.Println("download ... ", i)
-
-		res, _ := http.Get(v.Src)
-		fileName := fmt.Sprintf("./%s/%d.png", dir, i)
-		file, _ := os.Create(fileName)
-		io.Copy(file, res.Body)
-		i++
+		fmt.Println("download ... ", v.Title)
+		//
+		//res, _ := http.Get(v.Src)
+		//fileName := fmt.Sprintf("./%s/%d.png", dir, i)
+		//file, _ := os.Create(fileName)
+		//io.Copy(file, res.Body)
+		//i++
 	}
 }
