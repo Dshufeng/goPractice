@@ -3,6 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"strings"
+	"unicode/utf8"
 )
 
 func main() {
@@ -65,4 +68,46 @@ func main() {
 	}
 	map4Json, _ := json.Marshal(map4)
 	fmt.Println(string(map4Json))
+
+	type People struct {
+		Name string
+		Age  int
+	}
+
+	var people1 People
+	people1.Name = "wang"
+	people1.Age = 18
+
+	fmt.Println(people1)
+	people2 := People{
+		"li", 19,
+	}
+	var name = "Name"
+	pp := reflect.ValueOf(&people2)
+	field := pp.Elem().FieldByName(name)
+	field.SetString("lil")
+
+	fmt.Println(people2)
+
+	str1 := "hello世界你好"
+	i := strings.IndexRune(str1, '你')
+	c := utf8.RuneCountInString(str1)
+	fmt.Println(i, c, len([]rune(str1)))
+
+	i1 := UnicodeIndex(str1, "你")
+	fmt.Println(i1)
+}
+
+func UnicodeIndex(str, substr string) int {
+	// 子串在字符串的字节位置
+	result := strings.Index(str, substr)
+	if result >= 0 {
+		// 获得子串之前的字符串并转换成[]byte
+		prefix := []byte(str)[0:result]
+		// 将子串之前的字符串转换成[]rune
+		rs := []rune(string(prefix))
+		// 获得子串之前的字符串的长度，便是子串在字符串的字符位置
+		result = len(rs)
+	}
+	return result
 }
